@@ -13,8 +13,8 @@ docker build -t rocky8:test .
 # run it
 docker-compose up -d
 
-### default Seasons skin is on http://dockerhostname:8444/
-### the Belchertown skin is on http://dockerhostname:8444/belchertown/
+### default Seasons skin is on http://dockerhostname:8801/
+### the Belchertown skin is on http://dockerhostname:8801/belchertown/
 
 # for truncated builds remember to clean the docker mess up
 # docker ps -a and look for exited containers
