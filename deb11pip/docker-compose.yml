@@ -1,24 +1,24 @@
 #
-# sudo mkdir -p /mnt/testing-archive
-# sudo mkdir -p /mnt/testing-html
-# sudo chown -R 999:999 /mnt/testing-archive
-# sudo chown -R 999:999 /mnt/testing-html
+# sudo mkdir -p /mnt/deb11pip-archive
+# sudo mkdir -p /mnt/deb11pip-html
+# sudo chown -R 999:999 /mnt/deb11pip-archive
+# sudo chown -R 999:999 /mnt/deb11pip-html
 #
 
 weewx:
-    image: test:latest
-    container_name: testing
+    image: debian11:test
+    container_name: deb11pip
     restart: unless-stopped
     volumes:
-      - /mnt/testing-archive:/home/weewx/weewx-data/archive
-      - /mnt/testing-html:/home/weewx/weewx-data/public_html
+      - /mnt/deb11pip-archive:/home/weewx/weewx-data/archive
+      - /mnt/deb11pip-html:/home/weewx/weewx-data/public_html
 
 nginx:
     image: nginx:1.18.0-alpine
-    container_name: nginxtesting
+    container_name: nginxdeb11pip
     restart: unless-stopped
     ports:
-      - "8444:80"
+      - "8701:80"
     volumes:
-      - /mnt/testing-html:/usr/share/nginx/html
+      - /mnt/deb11pip-html:/usr/share/nginx/html
 

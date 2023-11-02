@@ -2,13 +2,13 @@ docker buildup pip v5
 ----------------------
 
 # setup 
-sudo mkdir -p /mnt/deb11pip-archive
-sudo mkdir -p /mnt/deb11pip-html
-sudo chown -R 999:999 /mnt/deb11pip-archive
-sudo chown -R 999:999 /mnt/deb11pip-html
+sudo mkdir -p /mnt/rocky9-archive
+sudo mkdir -p /mnt/rocky9-html
+sudo chown -R 999:999 /mnt/rocky9-archive
+sudo chown -R 999:999 /mnt/rocky9-html
 
 # build
-docker build -t debian11:test .
+docker build -t test:latest .
 
 # run it
 docker-compose up -d

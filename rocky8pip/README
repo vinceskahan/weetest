@@ -1,14 +1,14 @@
 docker buildup pip v5
 ----------------------
 
-# setup 
-sudo mkdir -p /mnt/deb11pip-archive
-sudo mkdir -p /mnt/deb11pip-html
-sudo chown -R 999:999 /mnt/deb11pip-archive
-sudo chown -R 999:999 /mnt/deb11pip-html
+# setup - rocky8 uses odd uid/gid
+sudo mkdir -p /mnt/rocky8-archive
+sudo mkdir -p /mnt/rocky8-html
+sudo chown -R 998:996 /mnt/rocky8-archive
+sudo chown -R 998:996 /mnt/rocky8-html
 
 # build
-docker build -t debian11:test .
+docker build -t rocky8:test .
 
 # run it
 docker-compose up -d
