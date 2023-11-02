@@ -9,3 +9,5 @@ Webserver ports in docker-compose files:
 * deb11pip:  - "8701:80"
 * rocky8pip: - "8801:80"
 * rocky9pip: - "8901:80"
+* leap15.4pip: - "9101:80"
+

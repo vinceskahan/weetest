@@ -1,0 +1,22 @@
+docker buildup pip v5
+----------------------
+
+# setup - opensuse/leap:15.4 uses odd uid/gid
+sudo mkdir -p /mnt/leap-archive
+sudo mkdir -p /mnt/leap-html
+sudo chown -R 499:486 /mnt/leap-archive
+sudo chown -R 499:486 /mnt/leap-html
+
+# build
+docker build -t leap:test .
+
+# run it
+docker-compose up -d
+
+### default Seasons skin is on http://dockerhostname:9101/
+### the Belchertown skin is on http://dockerhostname:9101/belchertown/
+
+# for truncated builds remember to clean the docker mess up
+# docker ps -a and look for exited containers
+# then docker rm their id or name
+

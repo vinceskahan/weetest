@@ -1,0 +1,24 @@
+#
+# sudo mkdir -p /mnt/leap-archive
+# sudo mkdir -p /mnt/leap-html
+# sudo chown -R 499:486 /mnt/leap-archive
+# sudo chown -R 499:486 /mnt/leap-html
+#
+
+weewx:
+    image: opensuseleap:test
+    container_name: leap
+    restart: unless-stopped
+    volumes:
+      - /mnt/leap-archive:/home/weewx/weewx-data/archive
+      - /mnt/leap-html:/home/weewx/weewx-data/public_html
+
+nginx:
+    image: nginx:1.18.0-alpine
+    container_name: nginxleap
+    restart: unless-stopped
+    ports:
+      - "9101:80"
+    volumes:
+      - /mnt/leap-html:/usr/share/nginx/html
+
