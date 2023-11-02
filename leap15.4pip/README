@@ -1,11 +1,11 @@
 docker buildup pip v5
 ----------------------
 
-# setup - opensuse/leap:15.4 uses odd uid/gid
+# setup
 sudo mkdir -p /mnt/leap-archive
 sudo mkdir -p /mnt/leap-html
-sudo chown -R 499:486 /mnt/leap-archive
-sudo chown -R 499:486 /mnt/leap-html
+sudo chown -R 1234:1234 /mnt/leap-archive
+sudo chown -R 1234:1234 /mnt/leap-html
 
 # build
 docker build -t leap:test .

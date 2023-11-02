@@ -1,11 +1,11 @@
 docker buildup pip v5
 ----------------------
 
-# setup - rocky8 uses odd uid/gid
+# setup
 sudo mkdir -p /mnt/rocky8-archive
 sudo mkdir -p /mnt/rocky8-html
-sudo chown -R 998:996 /mnt/rocky8-archive
-sudo chown -R 998:996 /mnt/rocky8-html
+sudo chown -R 1234:1234 /mnt/rocky8-archive
+sudo chown -R 1234:1234 /mnt/rocky8-html
 
 # build
 docker build -t rocky8:test .

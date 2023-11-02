@@ -4,8 +4,8 @@ docker buildup pip v5
 # setup 
 sudo mkdir -p /mnt/rocky9-archive
 sudo mkdir -p /mnt/rocky9-html
-sudo chown -R 999:999 /mnt/rocky9-archive
-sudo chown -R 999:999 /mnt/rocky9-html
+sudo chown -R 1234:1234 /mnt/rocky9-archive
+sudo chown -R 1234:1234 /mnt/rocky9-html
 
 # build
 docker build -t test:latest .

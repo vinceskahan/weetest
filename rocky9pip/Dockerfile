@@ -20,8 +20,8 @@ RUN yum  install -y python3 wget                       \
     && rm -rf /usr/share/locale/[f-z]*                 \
     && rm -rf /usr/share/locale/e[a-m]*                \
     && rm -rf /usr/share/locale/e[o-z]* \
-    && groupadd -r weewx                \
-    && useradd -r -g weewx weewx        \
+    && groupadd -r weewx -g 1234               \
+    && useradd -r -g weewx weewx -u 1234       \
     && mkdir -p /home/weewx/adds \
     && cd /home/weewx/adds\
     && wget -nv https://github.com/poblabs/weewx-belchertown/archive/refs/heads/master.zip -O belchertown.zip \

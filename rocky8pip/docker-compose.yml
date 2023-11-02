@@ -1,8 +1,8 @@
 #
 # sudo mkdir -p /mnt/rocky8-archive
 # sudo mkdir -p /mnt/rocky8-html
-# sudo chown -R 999:999 /mnt/rocky8-archive
-# sudo chown -R 999:999 /mnt/rocky8-html
+# sudo chown -R 1234:1234 /mnt/rocky8-archive
+# sudo chown -R 1234:1234 /mnt/rocky8-html
 #
 
 weewx:
