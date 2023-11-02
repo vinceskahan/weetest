@@ -1,0 +1,22 @@
+docker buildup pip v5
+----------------------
+
+# setup
+sudo mkdir -p /mnt/tumbleweed-archive
+sudo mkdir -p /mnt/tumbleweed-html
+sudo chown -R 1234:1234 /mnt/tumbleweed-archive
+sudo chown -R 1234:1234 /mnt/tumbleweed-html
+
+# build
+docker build -t tumbleweed:test .
+
+# run it
+docker-compose up -d
+
+### default Seasons skin is on http://dockerhostname:9101/
+### the Belchertown skin is on http://dockerhostname:9101/belchertown/
+
+# for truncated builds remember to clean the docker mess up
+# docker ps -a and look for exited containers
+# then docker rm their id or name
+
