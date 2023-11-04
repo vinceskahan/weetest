@@ -39,7 +39,7 @@ test-docker:
 	mkdir -p /mnt/$(DOCKER_CFG)-html
 	chown -R $(WEEWX_UID).$(WEEWX_GID) /mnt/$(DOCKER_CFG)-archive
 	chown -R $(WEEWX_UID).$(WEEWX_GID) /mnt/$(DOCKER_CFG)-html
-	(cd deb11pip; \
+	(cd $(DOCKER_CFG); \
   docker build -t $(DOCKER_TGT):test .; \
   docker-compose up -d)
 	@echo "http://$(DOCKERHOST):$(DOCKER_PORT)/"
@@ -49,3 +49,9 @@ test-deb11pip:
 
 test-rocky8pip:
 	DOCKER_CFG=rocky8pip DOCKER_TGT=rocky8 DOCKER_PORT=8801 make test-docker
+
+test-rocky9pip:
+	DOCKER_CFG=rocky9pip DOCKER_TGT=rocky9 DOCKER_PORT=8901 make test-docker
+
+test-suse15pip:
+	DOCKER_CFG=suse15pip DOCKER_TGT=suse15 DOCKER_PORT=9101 make test-docker
