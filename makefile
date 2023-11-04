@@ -16,11 +16,17 @@ PYTHON3_VERSION=$(shell python3 -V)
 all: help
 
 help:
+	@echo ""
 	@echo "options include:"
 	@echo "   info: display values for variables that affect these rules"
 	@echo ""
-	@echo "  deb11pip: run the debian 11 pip installer tests"
-	@echo " rocky8pip: run the rocky 8 pip installer tests"
+	@echo "   up-CONFIG:    start the weewx/nginx pair"
+	@echo "   down-CONFIG:  stop the weewx/nginx pair"
+	@echo "   test-CONFIG:  test CONFIG and exit"
+	@echo ""
+	@echo "   for known configs:"
+	@echo "    deb11pip"
+	@echo ""
 
 info:
 	@echo "     CWD: $(CWD)"
@@ -30,28 +36,76 @@ info:
 	@echo " PYTHON2: $(PYTHON2_VERSION)"
 	@echo " PYTHON3: $(PYTHON3_VERSION)"
 
-# generic target to run a docker installer test.  this requires the following:
+#---------------------------
+#
+# this uses docker-compose terminology
+#  (up = bring up a config, down = tear down a config)
+#
+# generic target to up a docker configuration.  this requires the following:
 #  DOCKER_CFG
 #  DOCKER_TGT
 #  DOCKER_PORT
-test-docker:
-	mkdir -p /mnt/$(DOCKER_CFG)-archive
-	mkdir -p /mnt/$(DOCKER_CFG)-html
-	chown -R $(WEEWX_UID).$(WEEWX_GID) /mnt/$(DOCKER_CFG)-archive
-	chown -R $(WEEWX_UID).$(WEEWX_GID) /mnt/$(DOCKER_CFG)-html
+up-docker:
+	mkdir -p /var/tmp/$(DOCKER_CFG)-archive
+	mkdir -p /var/tmp/$(DOCKER_CFG)-html
+	chmod -R 777 /var/tmp/$(DOCKER_CFG)-archive
+	chmod -R 777 /var/tmp/$(DOCKER_CFG)-html
 	(cd $(DOCKER_CFG); \
-  docker build -t $(DOCKER_TGT):test .; \
+  docker build -t $(DOCKER_TGT):latest .; \
   docker-compose up -d)
 	@echo "http://$(DOCKERHOST):$(DOCKER_PORT)/"
 
+up-deb11pip:
+	DOCKER_CFG=deb11pip DOCKER_TGT=debian11 DOCKER_PORT=8701 make up-docker
+
+up-rocky8pip:
+	DOCKER_CFG=rocky8pip DOCKER_TGT=rocky8 DOCKER_PORT=8801 make up-docker
+
+up-rocky9pip:
+	DOCKER_CFG=rocky9pip DOCKER_TGT=rocky9 DOCKER_PORT=8901 make up-docker
+
+up-suse15pip:
+	DOCKER_CFG=suse15pip DOCKER_TGT=suse15 DOCKER_PORT=9101 make up-docker
+
+#--- similarly down the docker-compose pair ---
+# we only need DOCKER_CFG for the stop action
+
+down-docker:
+	@echo "shutting down $(DOCKER_CFG)..."
+	(cd $(DOCKER_CFG); \
+  docker-compose down)
+
+down-deb11pip:
+	DOCKER_CFG=deb11pip make down-docker
+
+down-rocky8pip:
+	DOCKER_CFG=rocky8pip make down-docker
+
+down-rocky9pip:
+	DOCKER_CFG=rocky9pip make down-docker
+
+down-suse15pip:
+	DOCKER_CFG=suse15pip make down-docker
+
+#--- similarly test the weewx image ---
+# we only need DOCKER_CFG for the stop action
+
+test-docker:
+	@echo "testing $(DOCKER_CFG)..."
+	(cd $(DOCKER_CFG); \
+  docker build --target=test -t $(DOCKER_CFG):testing .; \
+  docker run --rm -it $(DOCKER_CFG):testing)
+
 test-deb11pip:
-	DOCKER_CFG=deb11pip DOCKER_TGT=debian11 DOCKER_PORT=8701 make test-docker
+	DOCKER_CFG=deb11pip make test-docker
 
 test-rocky8pip:
-	DOCKER_CFG=rocky8pip DOCKER_TGT=rocky8 DOCKER_PORT=8801 make test-docker
+	DOCKER_CFG=rocky8pip make test-docker
 
 test-rocky9pip:
-	DOCKER_CFG=rocky9pip DOCKER_TGT=rocky9 DOCKER_PORT=8901 make test-docker
+	DOCKER_CFG=rocky9pip make test-docker
 
 test-suse15pip:
-	DOCKER_CFG=suse15pip DOCKER_TGT=suse15 DOCKER_PORT=9101 make test-docker
+	DOCKER_CFG=suse15pip make test-docker
+
+#-------------------------------------------

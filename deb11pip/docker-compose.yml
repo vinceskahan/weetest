@@ -1,24 +1,25 @@
 #
-# sudo mkdir -p /mnt/deb11pip-archive
-# sudo mkdir -p /mnt/deb11pip-html
-# sudo chown -R 1234:1234 /mnt/deb11pip-archive
-# sudo chown -R 1234:1234 /mnt/deb11pip-html
+# sudo mkdir -p /var/tmp/deb11pip-archive
+# sudo mkdir -p /var/tmp/deb11pip-html
+# sudo chown -R 1234:1234 /var/tmp/deb11pip-archive
+# sudo chown -R 1234:1234 /var/tmp/deb11pip-html
 #
 
-weewx:
-    image: debian11:test
-    container_name: deb11pip
-    restart: unless-stopped
-    volumes:
-      - /mnt/deb11pip-archive:/home/weewx/weewx-data/archive
-      - /mnt/deb11pip-html:/home/weewx/weewx-data/public_html
+services:
+    weewx:
+        image: debian11:test
+        container_name: deb11pip
+        restart: unless-stopped
+        volumes:
+          - /var/tmp/deb11pip-archive:/home/weewx/weewx-data/archive
+          - /var/tmp/deb11pip-html:/home/weewx/weewx-data/public_html
 
-nginx:
-    image: nginx:1.18.0-alpine
-    container_name: nginxdeb11pip
-    restart: unless-stopped
-    ports:
-      - "8701:80"
-    volumes:
-      - /mnt/deb11pip-html:/usr/share/nginx/html
+    nginx:
+        image: nginx:1.18.0-alpine
+        container_name: nginxdeb11pip
+        restart: unless-stopped
+        ports:
+          - "8701:80"
+        volumes:
+          - /var/tmp/deb11pip-html:/usr/share/nginx/html
 

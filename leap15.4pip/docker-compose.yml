@@ -1,24 +1,25 @@
 #
-# sudo mkdir -p /mnt/leap-archive
-# sudo mkdir -p /mnt/leap-html
-# sudo chown -R 1234:1234 /mnt/leap-archive
-# sudo chown -R 1234:1234 /mnt/leap-html
+# sudo mkdir -p /var/tmp/leap-archive
+# sudo mkdir -p /var/tmp/leap-html
+# sudo chown -R 1234:1234 /var/tmp/leap-archive
+# sudo chown -R 1234:1234 /var/tmp/leap-html
 #
 
-weewx:
-    image: opensuseleap:test
-    container_name: leap
-    restart: unless-stopped
-    volumes:
-      - /mnt/leap-archive:/home/weewx/weewx-data/archive
-      - /mnt/leap-html:/home/weewx/weewx-data/public_html
+services:
+    weewx:
+        image: opensuseleap:test
+        container_name: leap
+        restart: unless-stopped
+        volumes:
+        - /var/tmp/leap-archive:/home/weewx/weewx-data/archive
+        - /var/tmp/leap-html:/home/weewx/weewx-data/public_html
 
-nginx:
-    image: nginx:1.18.0-alpine
-    container_name: nginxleap
-    restart: unless-stopped
-    ports:
-      - "9101:80"
-    volumes:
-      - /mnt/leap-html:/usr/share/nginx/html
+    nginx:
+        image: nginx:1.18.0-alpine
+        container_name: nginxleap
+        restart: unless-stopped
+        ports:
+        - "9101:80"
+        volumes:
+        - /var/tmp/leap-html:/usr/share/nginx/html
 

@@ -1,24 +1,25 @@
 #
-# sudo mkdir -p /mnt/rocky9-archive
-# sudo mkdir -p /mnt/rocky9-html
-# sudo chown -R 1234:1234 /mnt/rocky9-archive
-# sudo chown -R 1234:1234 /mnt/rocky9-html
+# sudo mkdir -p /var/tmp/rocky9-archive
+# sudo mkdir -p /var/tmp/rocky9-html
+# sudo chown -R 1234:1234 /var/tmp/rocky9-archive
+# sudo chown -R 1234:1234 /var/tmp/rocky9-html
 #
 
-weewx:
-    image: rocky9:test
-    container_name: rocky9
-    restart: unless-stopped
-    volumes:
-      - /mnt/rocky9-archive:/home/weewx/weewx-data/archive
-      - /mnt/rocky9-html:/home/weewx/weewx-data/public_html
+services:
+    weewx:
+        image: rocky9:test
+        container_name: rocky9
+        restart: unless-stopped
+        volumes:
+        - /var/tmp/rocky9-archive:/home/weewx/weewx-data/archive
+        - /var/tmp/rocky9-html:/home/weewx/weewx-data/public_html
 
-nginx:
-    image: nginx:1.18.0-alpine
-    container_name: nginxrocky9
-    restart: unless-stopped
-    ports:
-      - "8901:80"
-    volumes:
-      - /mnt/rocky9-html:/usr/share/nginx/html
+    nginx:
+        image: nginx:1.18.0-alpine
+        container_name: nginxrocky9
+        restart: unless-stopped
+        ports:
+        - "8901:80"
+        volumes:
+        - /var/tmp/rocky9-html:/usr/share/nginx/html
 

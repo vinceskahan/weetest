@@ -32,7 +32,7 @@ What's Next?
 #---------------------------------------------------------------------------------------
 
 
-[vince@vinces-Mac-mini deb11pip (refactor *+)]$ docker run deb11pip:testing
+[vince@vinces-Mac-mini deb11pip (refactor *+)]$ docker run --rm deb11pip:testing
 #----------------------
 this is the test script
 #----------------------
