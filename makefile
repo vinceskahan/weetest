@@ -26,6 +26,10 @@ help:
 	@echo ""
 	@echo "   for known configs:"
 	@echo "    deb11pip"
+	@echo "    rocky8pip"
+	@echo "    rocky9pip"
+	@echo "    leap15pip"
+	@echo "    tweed15pip"
 	@echo ""
 
 info:
@@ -64,8 +68,11 @@ up-rocky8pip:
 up-rocky9pip:
 	DOCKER_CFG=rocky9pip DOCKER_TGT=rocky9 DOCKER_PORT=8901 make up-docker
 
-up-suse15pip:
-	DOCKER_CFG=suse15pip DOCKER_TGT=suse15 DOCKER_PORT=9101 make up-docker
+up-leap15pip:
+	DOCKER_CFG=leap15pip DOCKER_TGT=leap15 DOCKER_PORT=9101 make up-docker
+
+up-tweed15pip:
+	DOCKER_CFG=tweed15pip DOCKER_TGT=tweed15 DOCKER_PORT=9201 make up-docker
 
 #--- similarly down the docker-compose pair ---
 # we only need DOCKER_CFG for the stop action
@@ -84,12 +91,23 @@ down-rocky8pip:
 down-rocky9pip:
 	DOCKER_CFG=rocky9pip make down-docker
 
-down-suse15pip:
-	DOCKER_CFG=suse15pip make down-docker
+down-leap15pip:
+	DOCKER_CFG=leap15pip make down-docker
+
+down-tweed15pip:
+	DOCKER_CFG=tweed15pip make down-docker
 
 #--- similarly test the weewx image ---
 # we only need DOCKER_CFG for the stop action
 
+test-all:
+	@echo "testing all configs..."
+	DOCKER_CFG=deb11pip make test-docker
+	DOCKER_CFG=rocky8pip make test-docker
+	DOCKER_CFG=rocky9pip  make test-docker
+	DOCKER_CFG=leap15pip make test-docker
+	DOCKER_CFG=tweed15pip make test-docker
+    
 test-docker:
 	@echo "testing $(DOCKER_CFG)..."
 	(cd $(DOCKER_CFG); \
@@ -105,7 +123,10 @@ test-rocky8pip:
 test-rocky9pip:
 	DOCKER_CFG=rocky9pip make test-docker
 
-test-suse15pip:
-	DOCKER_CFG=suse15pip make test-docker
+test-leap15pip:
+	DOCKER_CFG=leap15pip make test-docker
+
+test-tweed15pip:
+	DOCKER_CFG=tweed15pip make test-docker
 
 #-------------------------------------------

@@ -7,7 +7,7 @@
 #    docker run --rm -it somename:latest bash
 #-----------------------------------------------
 
-FROM rockylinux:9
+FROM rockylinux:9 as base
 MAINTAINER Vince Skahan "vinceskahan@gmail.com"
 
 # we'll need this later for Docker logging
@@ -69,6 +69,19 @@ RUN python3 -m venv /home/weewx/weewx-venv \
 RUN /home/weewx/weewx-venv/bin/weectl station reconfigure --no-prompt \
   --location="pip3 testing rocky9"
 
+#----- run the test suite after copying it into place ---
+# docker build --target test -t deb11pip:testing .
+# docker run --rm deb11pip:testing
+# echo $? for exit status of the container's test script
+#
+# (then examine the test script output)
+FROM base as test
+COPY test.sh /tmp
+CMD ["bash", "/tmp/test.sh"]
+
+#---- or build the production image
+# docker build -t deb11pip:latest .
+FROM base as build
 CMD /home/weewx/weewx-venv/bin/weewxd
 
 # an alternate config would use systemd
