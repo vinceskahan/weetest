@@ -7,7 +7,7 @@
 
 services:
     weewx:
-        image: tweed15pip:test
+        image: tweed15pip:latest
         container_name: tumbleweed
         restart: unless-stopped
         volumes:

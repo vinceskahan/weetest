@@ -7,7 +7,7 @@
 
 services:
     weewx:
-        image: rocky9pip:test
+        image: rocky9pip:latest
         container_name: rocky9
         restart: unless-stopped
         volumes:

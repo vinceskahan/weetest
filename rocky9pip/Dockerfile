@@ -7,7 +7,7 @@
 #    docker run --rm -it somename:latest bash
 #-----------------------------------------------
 
-FROM rockylinux:9 as base
+FROM rockylinux:9.2 as base
 MAINTAINER Vince Skahan "vinceskahan@gmail.com"
 
 # we'll need this later for Docker logging

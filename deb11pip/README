@@ -20,3 +20,7 @@ docker-compose up -d
 # docker ps -a and look for exited containers
 # then docker rm their id or name
 
+mkdir -p /var/tmp/deb11pip-archive
+mkdir -p /var/tmp/deb11pip-html
+chmod -R 777 /var/tmp/deb11pip-archive
+chmod -R 777 /var/tmp/deb11pip-html

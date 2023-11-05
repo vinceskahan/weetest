@@ -7,7 +7,7 @@
 
 services:
     weewx:
-        image: leap15pip:test
+        image: leap15pip:latest
         container_name: leap
         restart: unless-stopped
         volumes:

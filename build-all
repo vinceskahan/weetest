@@ -1,0 +1,29 @@
+
+# these build-all successfully if you want to do it quickly
+# as a prerequisite....
+
+(cd deb11pip ; \
+    docker build -t deb11pip:test   --target=test  . ; \
+    docker build -t deb11pip:latest --target=build .  \
+)
+
+(cd rocky8pip ; \
+    docker build -t rocky8pip:test   --target=test  . ; \
+    docker build -t rocky8pip:latest --target=build . \
+)
+
+(cd rocky9pip ; \
+    docker build -t rocky9pip:test   --target=test  . ; \
+    docker build -t rocky9pip:latest --target=build . \
+)
+
+(cd leap15pip ; \
+    docker build -t leap15pip:test   --target=test  . ; \
+    docker build -t leap15pip:latest --target=build . \
+)
+
+(cd tweed15pip ; \
+    docker build -t tweed15pip:test   --target=test  . ; \
+    docker build -t tweed15pip:latest --target=build . \
+)
+
