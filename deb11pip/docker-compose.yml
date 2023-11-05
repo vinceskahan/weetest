@@ -7,7 +7,7 @@
 
 services:
     weewx:
-        image: debian11:test
+        image: deb11pip:latest
         container_name: deb11pip
         restart: unless-stopped
         volumes:

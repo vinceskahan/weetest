@@ -49,13 +49,17 @@ info:
 #  DOCKER_CFG
 #  DOCKER_TGT
 #  DOCKER_PORT
+
+# build the latest prod image
+#    docker build --target build -t deb11pip:latest .
 up-docker:
 	mkdir -p /var/tmp/$(DOCKER_CFG)-archive
 	mkdir -p /var/tmp/$(DOCKER_CFG)-html
 	chmod -R 777 /var/tmp/$(DOCKER_CFG)-archive
 	chmod -R 777 /var/tmp/$(DOCKER_CFG)-html
+	echo "target is $(DOCKER_TGT):latest"
 	(cd $(DOCKER_CFG); \
-  docker build -t $(DOCKER_TGT):latest .; \
+  docker build --target=build -t $(DOCKER_TGT):latest .; \
   docker-compose up -d)
 	@echo "http://$(DOCKERHOST):$(DOCKER_PORT)/"
 
@@ -107,12 +111,15 @@ test-all:
 	DOCKER_CFG=rocky9pip  make test-docker
 	DOCKER_CFG=leap15pip make test-docker
 	DOCKER_CFG=tweed15pip make test-docker
-    
+
+
+# build the test image
+#    docker build --target test -t deb11pip:test .
 test-docker:
 	@echo "testing $(DOCKER_CFG)..."
 	(cd $(DOCKER_CFG); \
-  docker build --target=test -t $(DOCKER_CFG):testing .; \
-  docker run --rm -it $(DOCKER_CFG):testing)
+  docker build --target=test -t $(DOCKER_CFG):test .; \
+  docker run --rm -it $(DOCKER_CFG):test)
 
 test-deb11pip:
 	DOCKER_CFG=deb11pip make test-docker

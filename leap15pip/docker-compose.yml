@@ -7,7 +7,7 @@
 
 services:
     weewx:
-        image: opensuseleap:test
+        image: leap15pip:test
         container_name: leap
         restart: unless-stopped
         volumes:
