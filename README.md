@@ -19,7 +19,6 @@ Possible operations:
 *   make up-deb11pip - bring one weewx/nginx pair up in docker-compose
 *   make down-deb11pip - and tear it down in an orderly manner
 *   make test-deb11pip - run its test script and exit
-<br>
 *   make up-all - bring up 'all' known config weewx/nginx pairs
 *   make down-all - and tear any running weewx/nginx pairs down
 *   make test-all - test all known configs
