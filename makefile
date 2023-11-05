@@ -52,14 +52,15 @@ info:
 
 # build the latest prod image
 #    docker build --target build -t deb11pip:latest .
+
 up-docker:
 	mkdir -p /var/tmp/$(DOCKER_CFG)-archive
 	mkdir -p /var/tmp/$(DOCKER_CFG)-html
 	chmod -R 777 /var/tmp/$(DOCKER_CFG)-archive
 	chmod -R 777 /var/tmp/$(DOCKER_CFG)-html
-	echo "target is $(DOCKER_TGT):latest"
+	echo "target is $(DOCKER_TGT):latest..."
 	(cd $(DOCKER_CFG); \
-  docker build --target=build -t $(DOCKER_TGT):latest .; \
+  docker build --target=build -t $(DOCKER_TGT):latest . ; \
   docker-compose up -d)
 	@echo "http://$(DOCKERHOST):$(DOCKER_PORT)/"
 
@@ -77,6 +78,14 @@ up-leap15pip:
 
 up-tweed15pip:
 	DOCKER_CFG=tweed15pip DOCKER_TGT=tweed15 DOCKER_PORT=9201 make up-docker
+
+up-all:
+	@echo "starting all configs..."
+	make up-deb11pip
+	make up-rocky8pip
+	make up-rocky9pip
+	make up-leap15pip
+	make up-tweed15pip
 
 #--- similarly down the docker-compose pair ---
 # we only need DOCKER_CFG for the stop action
@@ -101,6 +110,14 @@ down-leap15pip:
 down-tweed15pip:
 	DOCKER_CFG=tweed15pip make down-docker
 
+down-all:
+	@echo "shutting down all configs..."
+	DOCKER_CFG=deb11pip make down-docker
+	DOCKER_CFG=rocky8pip make down-docker
+	DOCKER_CFG=rocky9pip  make down-docker
+	DOCKER_CFG=leap15pip make down-docker
+	DOCKER_CFG=tweed15pip make down-docker
+
 #--- similarly test the weewx image ---
 # we only need DOCKER_CFG for the stop action
 
@@ -118,7 +135,7 @@ test-all:
 test-docker:
 	@echo "testing $(DOCKER_CFG)..."
 	(cd $(DOCKER_CFG); \
-  docker build --target=test -t $(DOCKER_CFG):test .; \
+  docker build --target=test -t $(DOCKER_CFG):test . ; \
   docker run --rm -it $(DOCKER_CFG):test)
 
 test-deb11pip:

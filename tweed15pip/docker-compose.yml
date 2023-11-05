@@ -7,7 +7,7 @@
 
 services:
     weewx:
-        image: tumbleweed:test
+        image: tweed15pip:test
         container_name: tumbleweed
         restart: unless-stopped
         volumes:
@@ -19,7 +19,7 @@ services:
         container_name: nginxtumbleweed
         restart: unless-stopped
         ports:
-        - "9101:80"
+        - "9201:80"
         volumes:
         - /var/tmp/tumbleweed-html:/usr/share/nginx/html
 
