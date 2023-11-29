@@ -26,6 +26,7 @@ help:
 	@echo ""
 	@echo "      for known configs:"
 	@echo "          deb11pip"
+	@echo "          rocky8pip   or rocky8pkg"
 	@echo "          rocky8pip"
 	@echo "          rocky9pip"
 	@echo "          leap15pip"
@@ -72,10 +73,10 @@ info:
 # with a cannot pull message when it tries dockerhub
 
 up-docker:
-	mkdir -p /var/tmp/$(DOCKER_CFG)-archive
-	mkdir -p /var/tmp/$(DOCKER_CFG)-html
-	chmod -R 777 /var/tmp/$(DOCKER_CFG)-archive
-	chmod -R 777 /var/tmp/$(DOCKER_CFG)-html
+	#mkdir -p /var/tmp/$(DOCKER_CFG)-archive
+	#mkdir -p /var/tmp/$(DOCKER_CFG)-html
+	#chmod -R 777 /var/tmp/$(DOCKER_CFG)-archive
+	#chmod -R 777 /var/tmp/$(DOCKER_CFG)-html
 	echo "target is $(DOCKER_CFG):latest..."
 
 	(cd $(DOCKER_CFG); \
@@ -91,6 +92,9 @@ up-rocky8pip:
 up-rocky9pip:
 	DOCKER_CFG=rocky9pip DOCKER_TGT=rocky9pip DOCKER_PORT=8901 make up-docker
 
+up-rocky8pkg:
+	DOCKER_CFG=rocky8pkg DOCKER_TGT=rocky8pkg DOCKER_PORT=8911 make up-docker
+
 up-leap15pip:
 	DOCKER_CFG=leap15pip DOCKER_TGT=leap15pip DOCKER_PORT=9101 make up-docker
 
@@ -104,6 +108,7 @@ up-all:
 	make up-deb11pip
 	make up-rocky8pip
 	make up-rocky9pip
+	make up-rocky8pkg
 	make up-leap15pip
 	make up-tweed15pip
 
@@ -124,6 +129,9 @@ down-rocky8pip:
 down-rocky9pip:
 	DOCKER_CFG=rocky9pip make down-docker
 
+down-rocky8pkg:
+	DOCKER_CFG=rocky8pkg make down-docker
+
 down-leap15pip:
 	DOCKER_CFG=leap15pip make down-docker
 
@@ -135,6 +143,7 @@ down-all:
 	DOCKER_CFG=deb11pip make down-docker
 	DOCKER_CFG=rocky8pip make down-docker
 	DOCKER_CFG=rocky9pip  make down-docker
+	DOCKER_CFG=rocky8pkg  make down-docker
 	DOCKER_CFG=leap15pip make down-docker
 	DOCKER_CFG=tweed15pip make down-docker
 
@@ -163,6 +172,9 @@ test-rocky8pip:
 test-rocky9pip:
 	DOCKER_CFG=rocky9pip DOCKER_TGT=rocky9pip make test-docker
 
+test-rocky8pkg:
+	DOCKER_CFG=rocky8pkg DOCKER_TGT=rocky8pkg make test-docker
+
 test-leap15pip:
 	DOCKER_CFG=leap15pip DOCKER_TGT=leap15pip make test-docker
 
@@ -174,6 +186,7 @@ test-all:
 	DOCKER_CFG=deb11pip make test-docker
 	DOCKER_CFG=rocky8pip make test-docker
 	DOCKER_CFG=rocky9pip  make test-docker
+	DOCKER_CFG=rocky8pkg  make test-docker
 	DOCKER_CFG=leap15pip make test-docker
 	DOCKER_CFG=tweed15pip make test-docker
 
@@ -192,6 +205,7 @@ build-run-all:
 	DOCKER_CFG=deb11pip make build-run-docker
 	DOCKER_CFG=rocky8pip make build-run-docker
 	DOCKER_CFG=rocky9pip  make build-run-docker
+	DOCKER_CFG=rocky8pkg  make build-run-docker
 	DOCKER_CFG=leap15pip make build-run-docker
 	DOCKER_CFG=tweed15pip make build-run-docker
 
@@ -203,6 +217,9 @@ build-run-rocky8pip:
 
 build-run-rocky9pip:
 	DOCKER_CFG=rocky9pip DOCKER_TGT=rocky9pip make build-run-docker
+
+build-run-rocky8pkg:
+	DOCKER_CFG=rocky8pkg DOCKER_TGT=rocky8pkg make build-run-docker
 
 build-run-leap15pip:
 	DOCKER_CFG=leap15pip DOCKER_TGT=leap15pip make build-run-docker
@@ -225,6 +242,7 @@ build-test-all:
 	DOCKER_CFG=deb11pip make build-test-docker
 	DOCKER_CFG=rocky8pip make build-test-docker
 	DOCKER_CFG=rocky9pip  make build-test-docker
+	DOCKER_CFG=rocky8pkg  make build-test-docker
 	DOCKER_CFG=leap15pip make build-test-docker
 	DOCKER_CFG=tweed15pip make build-test-docker
 
@@ -233,6 +251,9 @@ build-test-deb11pip:
 
 build-test-rocky8pip:
 	DOCKER_CFG=rocky8pip DOCKER_TGT=rocky8pip make build-test-docker
+
+build-test-rocky8pkg:
+	DOCKER_CFG=rocky8pkg DOCKER_TGT=rocky8pkg make build-test-docker
 
 build-test-rocky9pip:
 	DOCKER_CFG=rocky9pip DOCKER_TGT=rocky9pip make build-test-docker
