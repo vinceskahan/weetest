@@ -1,0 +1,32 @@
+#--------------------------------------------------------------------
+#
+# this config uses a local directory to share data between containers
+# but by default the directory it makes has contents root:root
+# so you need to sudo to clean up the temporary data directory
+#
+# the local ./tmpdata/html directory should be in .gitignore of course
+#
+#--------------------------------------------------------------------
+
+version: "2"
+
+services:
+    weewx:
+        image: rocky8pkg:latest
+        container_name: rocky8
+        restart: unless-stopped
+        volumes:
+        - ./tmpdata/html:/var/www/html/weewx
+
+    nginx:
+        image: nginx:1.18.0-alpine
+        container_name: nginxrocky8
+        restart: unless-stopped
+        ports:
+        - "8811:80"
+        volumes:
+        - ./tmpdata/html:/usr/share/nginx/html
+
+volumes:
+    html:
+
