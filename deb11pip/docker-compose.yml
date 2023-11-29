@@ -1,9 +1,5 @@
-#
-# sudo mkdir -p /var/tmp/deb11pip-archive
-# sudo mkdir -p /var/tmp/deb11pip-html
-# sudo chown -R 1234:1234 /var/tmp/deb11pip-archive
-# sudo chown -R 1234:1234 /var/tmp/deb11pip-html
-#
+
+version: "2"
 
 services:
     weewx:
@@ -11,8 +7,8 @@ services:
         container_name: deb11pip
         restart: unless-stopped
         volumes:
-          - /var/tmp/deb11pip-archive:/home/weewx/weewx-data/archive
-          - /var/tmp/deb11pip-html:/home/weewx/weewx-data/public_html
+          - ./tmpdata/archive:/home/weewx/weewx-data/archive
+          - ./tmpdata/html:/home/weewx/weewx-data/public_html
 
     nginx:
         image: nginx:1.18.0-alpine
@@ -21,5 +17,5 @@ services:
         ports:
           - "8701:80"
         volumes:
-          - /var/tmp/deb11pip-html:/usr/share/nginx/html
+          - ./tmpdata/html:/usr/share/nginx/html:ro
 

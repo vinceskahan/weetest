@@ -1,9 +1,5 @@
-#
-# sudo mkdir -p /var/tmp/tumbleweed-archive
-# sudo mkdir -p /var/tmp/tumbleweed-html
-# sudo chown -R 1234:1234 /var/tmp/tumbleweed-archive
-# sudo chown -R 1234:1234 /var/tmp/tumbleweed-html
-#
+
+version: "2"
 
 services:
     weewx:
@@ -11,8 +7,8 @@ services:
         container_name: tumbleweed
         restart: unless-stopped
         volumes:
-        - /var/tmp/tumbleweed-archive:/home/weewx/weewx-data/archive
-        - /var/tmp/tumbleweed-html:/home/weewx/weewx-data/public_html
+        - ./tmpdata/archive:/home/weewx/weewx-data/archive
+        - ./tmpdata/html:/home/weewx/weewx-data/public_html
 
     nginx:
         image: nginx:1.18.0-alpine
@@ -21,5 +17,5 @@ services:
         ports:
         - "9201:80"
         volumes:
-        - /var/tmp/tumbleweed-html:/usr/share/nginx/html
+        - ./tmpdata/html:/usr/share/nginx/html
 

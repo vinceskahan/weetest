@@ -1,9 +1,5 @@
-#
-# sudo mkdir -p /var/tmp/leap-archive
-# sudo mkdir -p /var/tmp/leap-html
-# sudo chown -R 1234:1234 /var/tmp/leap-archive
-# sudo chown -R 1234:1234 /var/tmp/leap-html
-#
+
+version: "2"
 
 services:
     weewx:
@@ -11,8 +7,8 @@ services:
         container_name: leap
         restart: unless-stopped
         volumes:
-        - /var/tmp/leap-archive:/home/weewx/weewx-data/archive
-        - /var/tmp/leap-html:/home/weewx/weewx-data/public_html
+        - ./tmpdata/archive:/home/weewx/weewx-data/archive
+        - ./tmpdata/html:/home/weewx/weewx-data/public_html
 
     nginx:
         image: nginx:1.18.0-alpine
@@ -21,5 +17,5 @@ services:
         ports:
         - "9101:80"
         volumes:
-        - /var/tmp/leap-html:/usr/share/nginx/html
+        - ./tmpdata/html:/usr/share/nginx/html:ro
 

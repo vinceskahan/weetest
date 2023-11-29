@@ -1,12 +1,3 @@
-#--------------------------------------------------------------------
-#
-# this config uses a local directory to share data between containers
-# but by default the directory it makes has contents root:root
-# so you need to sudo to clean up the temporary data directory
-#
-# the local ./tmpdata/html directory should be in .gitignore of course
-#
-#--------------------------------------------------------------------
 
 version: "2"
 
@@ -26,7 +17,3 @@ services:
         - "8811:80"
         volumes:
         - ./tmpdata/html:/usr/share/nginx/html
-
-volumes:
-    html:
-

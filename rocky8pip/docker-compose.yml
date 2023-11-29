@@ -1,9 +1,5 @@
-#
-# sudo mkdir -p /var/tmp/rocky8-archive
-# sudo mkdir -p /var/tmp/rocky8-html
-# sudo chown -R 1234:1234 /var/tmp/rocky8-archive
-# sudo chown -R 1234:1234 /var/tmp/rocky8-html
-#
+
+version: "2"
 
 services:
     weewx:
@@ -11,8 +7,8 @@ services:
         container_name: rocky8
         restart: unless-stopped
         volumes:
-        - /var/tmp/rocky8-archive:/home/weewx/weewx-data/archive
-        - /var/tmp/rocky8-html:/home/weewx/weewx-data/public_html
+        - ./tmpdata/archive:/home/weewx/weewx-data/archive
+        - ./tmpdata/html:/home/weewx/weewx-data/public_html
 
     nginx:
         image: nginx:1.18.0-alpine
@@ -21,5 +17,5 @@ services:
         ports:
         - "8801:80"
         volumes:
-        - /var/tmp/rocky8-html:/usr/share/nginx/html
+        - ./tmpdata/html:/usr/share/nginx/html
 
