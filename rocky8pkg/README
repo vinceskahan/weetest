@@ -1,0 +1,10 @@
+
+-----------------------------
+docker buildup rocky8 v4 package
+-----------------------------
+
+cd ..
+make build-run-rocky8pkg
+make build-test-rocky8pkg
+
+see Dockerfile and docker-compose.yml for details
