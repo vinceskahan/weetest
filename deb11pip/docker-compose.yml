@@ -1,9 +1,37 @@
+#------------------------------------------------------------
+# to build:
+#    docker compose build [imagename]
+#
+# to test:
+#    docker compose up test
+#    docker compose down
+#
+# to run:
+#    docker compose up weewx nginx [-d]
+#    docker compose down
+#
+# note:
+#   this creates a 'tmpdata' subdir in the local directory
+#   for shared storage. This needs to be clean up manually
+#   which might require sudo (linux)
+#------------------------------------------------------------
 
-version: "2"
+version: "3.8"
 
 services:
+    test:
+        image: deb11-v5-pip:test
+        build:
+            context: ./
+            target: test
+    run:
+        image: deb11-v5-pip:run
+        build:
+            context: ./
+            target: base
+
     weewx:
-        image: deb11pip:latest
+        image: deb11-v5-pip:run
         container_name: deb11pip
         restart: unless-stopped
         volumes:

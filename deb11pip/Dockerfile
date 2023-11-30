@@ -1,10 +1,6 @@
 #-----------------------------------------------
-# Build into an image ala:
-#    docker build -t somename:latest .
-#
-# To run a shell to log into a container running
-# this image:
-#    docker run --rm -it somename:latest bash
+# 'run'  = installed weewx running weewxd
+# 'test' = same but runs test routine and exits
 #-----------------------------------------------
 
 FROM debian:11-slim as base
@@ -43,14 +39,16 @@ RUN apt-get update                                  \
     && chown -R weewx:weewx /home/weewx \
     && chmod -R 755 /home/weewx 
 
+CMD "date"
+
 # at this point you have a reusable starting point
 # with the syslog additions in /tmp
 # and a downloaded skin in /home/weewx/adds
 
 #--- run the rest unprivileged ---
-#--- this would be the install steps
-
 USER weewx
+
+#--- this would be the install steps
 
 #(future)
 #for f in /home/weewx/adds/*.zip
@@ -72,7 +70,7 @@ USER weewx
 
 RUN python3 -m venv /home/weewx/weewx-venv \
     && . /home/weewx/weewx-venv/bin/activate \
-    && pip3 install weewx             \
+    && pip3 install weewx==5.0.0b15             \
     && weectl station create --no-prompt \
     && sed -i -e s:debug\ =\ 0:debug\ =\ 1: /home/weewx/weewx-data/weewx.conf \
     && sed -i -e s:weewx.engine.StdPrint,:: /home/weewx/weewx-data/weewx.conf \
@@ -84,7 +82,7 @@ RUN python3 -m venv /home/weewx/weewx-venv \
 RUN /home/weewx/weewx-venv/bin/weectl station reconfigure --no-prompt \
   --location="pip3 testing deb11"
 
-# at this point we have a 'base' to use for multiple derivative builds
+CMD ["/home/weewx/weewx-venv/bin/weewxd"]
 
 #----- run the test suite after copying it into place ---
 # docker build --target test -t deb11pip:testing .
@@ -95,12 +93,4 @@ RUN /home/weewx/weewx-venv/bin/weectl station reconfigure --no-prompt \
 FROM base as test
 COPY test.sh /tmp
 CMD ["bash", "/tmp/test.sh"]
-
-#---- or build the production image
-# docker build -t deb11pip:latest .
-FROM base as build
-CMD /home/weewx/weewx-venv/bin/weewxd
-
-# an alternate config would use systemd
-# but this is painful in docker it seems
 
