@@ -8,12 +8,21 @@
 #
 # to run:
 #    docker compose up weewx nginx [-d]
+#
+# to stop/delete containers started via docker compose
 #    docker compose down
 #
 # note:
 #   this creates a 'tmpdata' subdir in the local directory
 #   for shared storage. This needs to be clean up manually
 #   which might require sudo (linux)
+#
+# alternate quicktest incantation using docker:
+#   docker run --rm -it deb11-v5-pip:test
+#
+# interactively running the 'run' image will not print
+# LOOP to stdout because StdPrint is removed in the image
+# creation process which is for more typical testing.
 #------------------------------------------------------------
 
 version: "3.8"

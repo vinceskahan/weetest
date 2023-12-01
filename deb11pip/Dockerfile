@@ -59,7 +59,7 @@ USER weewx
 
 # install and configure weewx
 #    create a default station then reconfigure with weectl
-#       setting debug=1 can't be done via weectl
+#       use sed for setting debug=1 because that can't be done via weectl
 #       logging additions are needed due to no syslog in a docker image
 #       and StdPrint is removed to stop LOOP from being logged to stdout
 #

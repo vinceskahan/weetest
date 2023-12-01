@@ -1,26 +1,8 @@
 docker buildup pip v5
 ----------------------
 
-# setup 
-sudo mkdir -p /mnt/deb11pip-archive
-sudo mkdir -p /mnt/deb11pip-html
-sudo chown -R 1234:1234 /mnt/deb11pip-archive
-sudo chown -R 1234:1234 /mnt/deb11pip-html
+see the docker-compose.yml for usage
 
-# build
-docker build -t debian11:test .
+default Seasons skin is on http://dockerhostname:8701/
+the Belchertown skin is on http://dockerhostname:8701/belchertown/
 
-# run it
-docker-compose up -d
-
-### default Seasons skin is on http://dockerhostname:8701/
-### the Belchertown skin is on http://dockerhostname:8701/belchertown/
-
-# for truncated builds remember to clean the docker mess up
-# docker ps -a and look for exited containers
-# then docker rm their id or name
-
-mkdir -p /var/tmp/deb11pip-archive
-mkdir -p /var/tmp/deb11pip-html
-chmod -R 777 /var/tmp/deb11pip-archive
-chmod -R 777 /var/tmp/deb11pip-html
