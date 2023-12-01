@@ -18,10 +18,10 @@ COPY logging.additions /tmp/logging.additions
 # create and configure a weewx user
 # stash a copy of a skin/extension for later use
 # fix up permissions
+#&& apt-get remove -y gcc                           \
 
 RUN apt-get update                                  \
     && apt-get install -y python3-pip python3-venv sqlite3 wget \
-    && apt-get remove -y gcc                           \
     && apt-get clean autoclean                         \
     && apt-get autoremove --yes                        \
     && rm -rf /var/lib/{apt,dpkg,cache,log}            \
