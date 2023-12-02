@@ -18,6 +18,8 @@ COPY logging.additions /tmp/logging.additions
 # stash a copy of a skin/extension for later use
 # fix up permissions
 
+# FIXME: the uid:gid likely do not need to be specified here
+
 RUN apt-get update                                  \
     && apt-get install -y python3-pip python3-venv sqlite3 wget gcc \
     && apt-get clean autoclean                         \
@@ -61,6 +63,8 @@ USER weewx
 # in addition to the default Seasons skin at the top
 # of the web doc root
 
+# TODO: consider adding unittest, paho-mqtt, requests here for future testing needs
+
 RUN python3 -m venv /home/weewx/weewx-venv \
     && . /home/weewx/weewx-venv/bin/activate \
     && pip3 install weewx==5.0.0b15             \
@@ -73,7 +77,7 @@ RUN python3 -m venv /home/weewx/weewx-venv \
 
 # test reconfigure
 RUN /home/weewx/weewx-venv/bin/weectl station reconfigure --no-prompt \
-  --location="pip3 testing deb11"
+  --location="deb11-v5-pip testing"
 
 #---------------------------------------------------------------------------------------
 # 'run' is a minimal upstream os that runs weewxd
