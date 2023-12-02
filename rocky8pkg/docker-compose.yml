@@ -34,7 +34,7 @@ services:
             context: ./
             target: test
         volumes:
-          - .:/home/weetest/tests
+          - ./tests:/home/weetest/tests
     run:
         image: rocky8-v4-pkg:run
         build:
