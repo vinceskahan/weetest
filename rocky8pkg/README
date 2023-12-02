@@ -3,8 +3,9 @@
 docker buildup rocky8 v4 package
 -----------------------------
 
-cd ..
-make build-run-rocky8pkg
-make build-test-rocky8pkg
-
 see Dockerfile and docker-compose.yml for details
+
+note: the test target runs a CMD within the container
+      and the docker-compose.yml file mounts a local
+      working directory with the test script itself
+
