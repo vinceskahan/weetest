@@ -13,7 +13,8 @@ MAINTAINER Vince Skahan "vinceskahan@gmail.com"
 # we'll need this later for Docker logging
 COPY logging.additions /tmp/logging.additions
 
-RUN yum  install -y python3 wget                       \
+RUN yum install -y epel-release python3-pip \
+    && yum install -y python3 wget python3-devel gcc \
     && rm -rf /usr/share/doc                           \
     && rm -rf /usr/share/man                           \
     && rm -rf /usr/share/locale/[a-d]*                 \
@@ -57,7 +58,7 @@ USER weewx
 
 RUN python3 -m venv /home/weewx/weewx-venv \
     && . /home/weewx/weewx-venv/bin/activate \
-    && pip3 install weewx             \
+    && pip3 install weewx==5.0b15             \
     && weectl station create --no-prompt \
     && sed -i -e s:debug\ =\ 0:debug\ =\ 1: /home/weewx/weewx-data/weewx.conf \
     && sed -i -e s:weewx.engine.StdPrint,:: /home/weewx/weewx-data/weewx.conf \
@@ -69,6 +70,12 @@ RUN python3 -m venv /home/weewx/weewx-venv \
 RUN /home/weewx/weewx-venv/bin/weectl station reconfigure --no-prompt \
   --location="pip3 testing rocky9"
 
+#---- or build the production image
+# docker build -t deb11pip:latest .
+FROM base as run
+CMD /home/weewx/weewx-venv/bin/weewxd
+
+
 #----- run the test suite after copying it into place ---
 # docker build --target test -t deb11pip:testing .
 # docker run --rm deb11pip:testing
@@ -78,12 +85,3 @@ RUN /home/weewx/weewx-venv/bin/weectl station reconfigure --no-prompt \
 FROM base as test
 COPY test.sh /tmp
 CMD ["bash", "/tmp/test.sh"]
-
-#---- or build the production image
-# docker build -t deb11pip:latest .
-FROM base as build
-CMD /home/weewx/weewx-venv/bin/weewxd
-
-# an alternate config would use systemd
-# but this is painful in docker it seems
-

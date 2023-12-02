@@ -28,6 +28,11 @@ RUN yum install -y http://weewx.com/downloads/released_versions/weewx-4.10.2-1.e
     && cat /tmp/logging.additions >> /etc/weewx/weewx.conf 
 
 
+#---- or build the production image
+# docker build -t rocky8pkg:latest .
+FROM base as run
+CMD /usr/bin/weewxd
+
 #----- run the test suite after copying it into place ---
 # docker build --target test -t rocky8pkg:testing .
 # docker run --rm rocky8pkg:testing
@@ -37,13 +42,3 @@ RUN yum install -y http://weewx.com/downloads/released_versions/weewx-4.10.2-1.e
 FROM base as test
 COPY test.sh /tmp
 CMD ["bash", "/tmp/test.sh"]
-
-#---- or build the production image
-# docker build -t rocky8pkg:latest .
-FROM base as build
-CMD /usr/bin/weewxd
-
-# an alternate config would use systemd
-# but this is painful in docker it seems
-
-
