@@ -1,0 +1,15 @@
+
+# this builds the images
+
+version: "2"
+
+services:
+    weewx:
+        build:
+            context: ./
+            target: base
+    test:
+        build:
+            context: ./
+            target: test
+

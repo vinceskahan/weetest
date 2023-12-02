@@ -1,0 +1,8 @@
+docker buildup pip v5
+----------------------
+
+see the docker-compose.yml for usage
+
+default Seasons skin is on http://dockerhostname:8701/
+the Belchertown skin is on http://dockerhostname:8701/belchertown/
+

@@ -1,0 +1,58 @@
+#------------------------------------------------------------
+# to build:
+#    docker compose build [imagename]
+#
+# to test:
+#    docker compose up test
+#    docker compose down
+#
+# to run:
+#    docker compose up weewx nginx [-d]
+#
+# to stop/delete containers started via docker compose
+#    docker compose down
+#
+# note:
+#   this creates a 'tmpdata' subdir in the local directory
+#   for shared storage. This needs to be clean up manually
+#   which might require sudo (linux)
+#
+# alternate quicktest incantation using docker:
+#   docker run --rm -it deb12-v5-pip:test
+#
+# interactively running the 'run' image will not print
+# LOOP to stdout because StdPrint is removed in the image
+# creation process which is for more typical testing.
+#------------------------------------------------------------
+
+version: "3.8"
+
+services:
+    test:
+        image: deb12-v5-pip:test
+        build:
+            context: ./
+            target: test
+    run:
+        image: deb12-v5-pip:run
+        build:
+            context: ./
+            target: base
+
+    weewx:
+        image: deb12-v5-pip:run
+        container_name: deb12pip
+        restart: unless-stopped
+        volumes:
+          - ./tmpdata/archive:/home/weewx/weewx-data/archive
+          - ./tmpdata/html:/home/weewx/weewx-data/public_html
+
+    nginx:
+        image: nginx:1.18.0-alpine
+        container_name: nginxdeb12pip
+        restart: unless-stopped
+        ports:
+          - "9301:80"
+        volumes:
+          - ./tmpdata/html:/usr/share/nginx/html:ro
+

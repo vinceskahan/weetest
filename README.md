@@ -10,11 +10,17 @@ with uid=1234 and gid=1234 for reuse in these configurations
 
 Webserver ports in docker-compose files:
 * deb11pip:     - "8701:80"
+<p>
+* deb12pip:     - "9301:80"
+<p>
 * rocky8pip:    - "8801:80"
 * rocky8pkg:    - "8811:80"
-* rocky9pip:    - "8901:80"
-* leap15.4pip:  - "9101:80"
-* tweed15.4pip: - "9201:80"
+*
+<p> rocky9pip:    - "8901:80"
+*
+<p> leap15.4pip:  - "9101:80"
+*
+<p> tweed15.4pip: - "9201:80"
 
 Possible operations (examples):
 *   make up-deb11pip - bring one weewx/nginx pair up in docker-compose
