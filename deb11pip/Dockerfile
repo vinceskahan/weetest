@@ -9,10 +9,9 @@ MAINTAINER Vince Skahan "vinceskahan@gmail.com"
 # we'll need this later for Docker logging
 COPY logging.additions /tmp/logging.additions
 
-# it looks odd installing things then removing things
-# but python3-venv brings in many packages that make
-# the image huge.  It seems that removing gcc helps
-# get the resulting image down to a more reasonable size
+# it looks odd installing things then removing things but python3-venv
+# brings in many packages that make the image huge and gcc is needed
+# so CT3 will build correctly via pip
 #
 # add some packages, clean up needless things
 # create and configure a weewx user
@@ -20,7 +19,7 @@ COPY logging.additions /tmp/logging.additions
 # fix up permissions
 
 RUN apt-get update                                  \
-    && apt-get install -y python3-pip python3-venv sqlite3 wget \
+    && apt-get install -y python3-pip python3-venv sqlite3 wget gcc \
     && apt-get clean autoclean                         \
     && apt-get autoremove --yes                        \
     && rm -rf /var/lib/{apt,dpkg,cache,log}            \
