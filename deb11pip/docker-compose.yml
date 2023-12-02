@@ -37,7 +37,7 @@ services:
         image: deb11-v5-pip:run
         build:
             context: ./
-            target: base
+            target: run
 
     weewx:
         image: deb11-v5-pip:run

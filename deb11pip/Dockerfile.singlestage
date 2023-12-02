@@ -1,7 +1,7 @@
-#---------------------------------------------------------------------------------------
-# 'base' is the starting point we add weewx, testing tools, etc. to later below
-# this shouldn't change much hypothetically unless testing os updates is needed
-#---------------------------------------------------------------------------------------
+#-----------------------------------------------
+# 'run'  = installed weewx running weewxd
+# 'test' = same but runs test routine and exits
+#-----------------------------------------------
 
 FROM debian:11-slim as base
 MAINTAINER Vince Skahan "vinceskahan@gmail.com"
@@ -18,6 +18,7 @@ COPY logging.additions /tmp/logging.additions
 # create and configure a weewx user
 # stash a copy of a skin/extension for later use
 # fix up permissions
+#&& apt-get remove -y gcc                           \
 
 RUN apt-get update                                  \
     && apt-get install -y python3-pip python3-venv sqlite3 wget \
@@ -44,12 +45,18 @@ CMD "date"
 # with the syslog additions in /tmp
 # and a downloaded skin in /home/weewx/adds
 
-#---------------------------------------------------------------------------------------
-# 'build' sets up and installs weewx, running only install/configure steps for weewx
-#---------------------------------------------------------------------------------------
-
+#--- run the rest unprivileged ---
 FROM base as build
 USER weewx
+
+#--- this would be the install steps
+
+#(future)
+#for f in /home/weewx/adds/*.zip
+#do
+	#weectl extension install ${f}
+    #### a test might be to run 'weectl extension list' and look for it
+#done
 
 # install and configure weewx
 #    create a default station then reconfigure with weectl
@@ -76,42 +83,11 @@ RUN python3 -m venv /home/weewx/weewx-venv \
 RUN /home/weewx/weewx-venv/bin/weectl station reconfigure --no-prompt \
   --location="pip3 testing deb11"
 
-#---------------------------------------------------------------------------------------
-# 'run' is a minimal upstream os that runs weewxd
-#
-# unfortunately we need to add python to the minimal os from upstream
-# so the same cleanups as in 'base' apply here
-# as well as setting up the weewx user:group to run unprivileged
-#
-# FIXME: the uid:gid likely do not need to be specified here
-#
-# approximate size is 195MB for deb11 v5 pip
-#---------------------------------------------------------------------------------------
-
-FROM debian:11-slim as run
+FROM python:11-slim as run
 COPY --from=build /home/weewx /home/weewx
-RUN apt-get update                                  \
-    && apt-get install -y python3 \
-    && apt-get clean autoclean                         \
-    && apt-get autoremove --yes                        \
-    && rm -rf /var/lib/{apt,dpkg,cache,log}            \
-    && rm -rf /usr/share/doc                           \
-    && rm -rf /usr/share/man                           \
-    && rm -rf /usr/share/locale/[a-d]*                 \
-    && rm -rf /usr/share/locale/[f-z]*                 \
-    && rm -rf /usr/share/locale/e[a-m]*                \
-    && rm -rf /usr/share/locale/e[o-z]*  \
-    && groupadd -r weewx -g 1234        \
-    && useradd -r -g weewx weewx -u 1234
-USER weewx
+
 CMD ["/home/weewx/weewx-venv/bin/weewxd"]
 
-#---------------------------------------------------------------------------------------
-# 'test' is the run image with tests enabled
-#
-# to use pip here, base this on 'build'           (481 MB for deb11 v5 pip)
-# to use just bash for tests, base this on 'run'  (195 MB for deb11 v5 pip)
-#---------------------------------------------------------------------------------------
 
 #----- run the test suite after copying it into place ---
 # docker build --target test -t deb11pip:testing .
@@ -119,7 +95,7 @@ CMD ["/home/weewx/weewx-venv/bin/weewxd"]
 # echo $? for exit status of the container's test script
 #
 # (then examine the test script output)
-FROM build as test
+FROM base as test
 COPY test.sh /tmp
 CMD ["bash", "/tmp/test.sh"]
 
