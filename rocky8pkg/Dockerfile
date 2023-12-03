@@ -1,11 +1,8 @@
-#-----------------------------------------------
-# Build into an image ala:
-#    docker build -t somename:latest .
-#
-# To run a shell to log into a container running
-# this image:
-#    docker run --rm -it somename:latest bash
-#-----------------------------------------------
+
+#----------------------------------------------------
+# note: yum commands have to run as root
+# so we do not use 'USER weewx' below
+#----------------------------------------------------
 
 FROM rockylinux:8 as base
 MAINTAINER Vince Skahan "vinceskahan@gmail.com"
