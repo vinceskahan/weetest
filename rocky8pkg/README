@@ -9,3 +9,12 @@ note: the test target runs a CMD within the container
       and the docker-compose.yml file mounts a local
       working directory with the test script itself
 
+# to run a test interactively
+#    (order of the options and quoting is important here)
+#
+docker run --rm -it --mount type=bind,source="$(pwd)"/tests,target=/home/weetest/tests,readonly rocky8-v4-pkg:test
+
+# or easier yet
+docker up test
+docker down test
+
