@@ -1,0 +1,23 @@
+
+docker buildup rocky8
+----------------------
+
+docker compose build base v4-pkg v4-setup v5-pip [--no-cache]
+docker images
+docker compose up v5-pip v4-pkg v4-setup [-d]
+docker compose ps
+docker compose logs -f  [imagename(s)]
+docker compose down
+
+
+output of docker images:
+
+   REPOSITORY      TAG               IMAGE ID       CREATED         SIZE
+   rocky8          v5-pip            82ed2bfaea3e   8 minutes ago   582MB
+   rocky8          v4-setup          514cb68c2c13   9 minutes ago   529MB
+   rocky8          v4-pkg            122046438cc3   9 minutes ago   358MB
+   rocky8          base              62c427cc509f   9 minutes ago   311MB
+   rockylinux      8.8               1632c4ad6456   6 months ago    220MB
+
+see the Dockerfile and docker-compose.yml files for details....
+
