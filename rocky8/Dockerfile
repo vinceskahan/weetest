@@ -67,11 +67,9 @@ RUN python3.9 -m venv /home/weewx/weewx-venv \
 # do some cleanup as root for size
 #
 # note: deleting the rpm/dnf stuff will prevent use of rpm moving forward
-#       but hopefully this is not needed 'after' weex is installed
+
 USER root
-RUN yum remove -y gcc \
-    && rm -rf /var/lib/rpm \
-    && rm -rf /var/cache/dnf
+RUN yum remove -y gcc 
 
 # run the daemon unprivileged
 #  - this will block you from running commands as root via bash interactively
