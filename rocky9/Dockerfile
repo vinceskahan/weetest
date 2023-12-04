@@ -111,8 +111,9 @@ CMD weewxd
 #-------------------------------------------------------------
 
 FROM base as v4setup
-RUN yum install -y python3 python3-pip python3-configobj python3-pillow python3-pyserial python3-pyusb gcc python3-devel \
+RUN yum install -y python3 python3-pip python3-pyserial python3-pyusb gcc python3-devel \
     && pip3 install cheetah3 pyephem \
+    && python3.9 -m pip install CT3 Pillow==9.4.0 configobj \
     && wget http://weewx.com/downloads/released_versions/weewx-4.10.2.tar.gz -O /root/weewx-4.10.2.tar.gz  \
     && cd /root \
     && tar xzf weewx-4.10.2.tar.gz \
