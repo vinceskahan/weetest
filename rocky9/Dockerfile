@@ -64,16 +64,6 @@ RUN python3 -m venv /home/weewx/weewx-venv \
     && sed -i -e s:weewx.engine.StdPrint,:: /home/weewx/weewx-data/weewx.conf \
     && cat /tmp/logging.additions >> /home/weewx/weewx-data/weewx.conf
 
-# do some cleanup as root for size
-#
-# note: deleting the rpm/dnf stuff will prevent use of rpm moving forward
-
-USER root
-RUN yum remove -y gcc 
-
-# run the daemon unprivileged
-#  - this will block you from running commands as root via bash interactively
-USER weewx
 CMD /home/weewx/weewx-venv/bin/weewxd
 
 #---- additional example typical test scenario ---
@@ -87,18 +77,29 @@ CMD ["python3.9", "/tmp/test.py"]
 
 FROM base as v4pkg
 
-# alternately force it in one step
-####RUN yum install -y http://weewx.com/downloads/released_versions/weewx-4.10.2-1.el8.noarch.rpm \
+# much sleight of hand to force the old v4 pkg to install and run
+# - install gcc to be able to compile CT3 correctly
+# - temporarily set cryto policies to get rpm keys to import and rpm to install
+# - install python39 and its modules ala the old setup installation
+# - alias python3 to point to python3.9 so the rpm uses it rather than the system default python
+# - and remove gcc at the end of the installation
 
 # install and configure weewx
 #    python3-cheetah doesn't get brought in by the 4.10.2-1.el8 weewx rpm it seems
 #    set debug=1
 #    remove StdPrint so LOOP isn't sent to stdout
 #    append logging stanza so we don't look for syslogd at runtime
-RUN yum install -y python3-cheetah \
+
+RUN yum install -y gcc python39 python3-pip python3-pyserial python3-pyusb python3-devel \
+    && python3.9 -m pip install pip --upgrade \
+    && python3.9 -m pip install CT3 Pillow==9.4.0 configobj \
+    && update-crypto-policies --set DEFAULT:SHA1 \
     && rpm --import https://weewx.com/keys.html \
     && curl -s https://weewx.com/yum/weewx-el8.repo | tee /etc/yum.repos.d/weewx.repo \
+    && alias python3="/usr/bin/python3.9" \
     && yum install -y weewx \
+    && update-crypto-policies --set DEFAULT \
+    && yum remove -y gcc \
     && sed -i -e s:debug\ =\ 0:debug\ =\ 1: /etc/weewx/weewx.conf \
     && sed -i -e s:weewx.engine.StdPrint,:: /etc/weewx/weewx.conf \
     && cat /tmp/logging.additions >> /etc/weewx/weewx.conf 
@@ -108,7 +109,6 @@ CMD weewxd
 #-------------------------------------------------------------
 # install v4 setup.py over the base image above
 #-------------------------------------------------------------
-# coming soon
 
 FROM base as v4setup
 RUN yum install -y python3 python3-pip python3-configobj python3-pillow python3-pyserial python3-pyusb gcc python3-devel \
