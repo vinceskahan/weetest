@@ -39,7 +39,6 @@ RUN yum install -y wget epel-release \
 
 FROM base as v5pip
 
-# the os python 3.6.8 is too old for v5 so add 3.9
 # need gcc for compiling CT3
 # also set up weewx user/group/homedir
 RUN yum install -y python3-pip python3-devel python3-cheetah gcc \
@@ -85,18 +84,17 @@ FROM base as v4pkg
 # - and remove gcc at the end of the installation
 
 # install and configure weewx
-#    python3-cheetah doesn't get brought in by the 4.10.2-1.el8 weewx rpm it seems
+#    use CT3 rather than python3-cheetah
 #    set debug=1
 #    remove StdPrint so LOOP isn't sent to stdout
 #    append logging stanza so we don't look for syslogd at runtime
 
-RUN yum install -y gcc python39 python3-pip python3-pyserial python3-pyusb python3-devel \
-    && python3.9 -m pip install pip --upgrade \
-    && python3.9 -m pip install CT3 Pillow==9.4.0 configobj \
+RUN yum install -y gcc python3 python3-pip python3-pyserial python3-pyusb python3-devel \
+    && python3 -m pip install pip --upgrade \
+    && python3 -m pip install CT3 Pillow==9.4.0 configobj \
     && update-crypto-policies --set DEFAULT:SHA1 \
     && rpm --import https://weewx.com/keys.html \
     && curl -s https://weewx.com/yum/weewx-el8.repo | tee /etc/yum.repos.d/weewx.repo \
-    && alias python3="/usr/bin/python3.9" \
     && yum install -y weewx \
     && update-crypto-policies --set DEFAULT \
     && yum remove -y gcc \

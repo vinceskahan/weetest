@@ -9,7 +9,6 @@ docker compose ps
 docker compose logs -f  [imagename(s)]
 docker compose down
 
-
 output of docker images:
 
     [vince@vinces-Mac-mini rocky9 (refactor %=)]$ docker images
@@ -26,4 +25,7 @@ output of docker images:
 
 see the Dockerfile and docker-compose.yml files for details....
 
-
+about python versions...
+ - base os is python 3.9.16
+ - v5 pip uses the os python
+ - v4 pkg and setup require some sleight of hand for the modules and repo keys

@@ -9,7 +9,6 @@ docker compose ps
 docker compose logs -f  [imagename(s)]
 docker compose down
 
-
 output of docker images:
 
     REPOSITORY      TAG               IMAGE ID       CREATED          SIZE
@@ -20,3 +19,8 @@ output of docker images:
     rockylinux      8.8               1632c4ad6456   6 months ago     220MB
 
 see the Dockerfile and docker-compose.yml files for details....
+
+About python versions:
+ - rockylinux 8.8 has 3.6.8
+ - v4 setup and pkg installations use the os native python
+ - v5 pip requires 'adding' python3.9 and using that explicitly to run the installation steps
