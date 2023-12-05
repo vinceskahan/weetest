@@ -1,0 +1,25 @@
+
+docker buildup rocky8
+----------------------
+
+docker compose build base v4-pkg v4-setup v5-pip [--no-cache]
+docker images
+docker compose up v5-pip v4-pkg v4-setup [-d]
+docker compose ps
+docker compose logs -f  [imagename(s)]
+docker compose down
+
+output of docker images:
+deb12           v4-pkg            1382272d8f62   6 minutes ago       610MB
+deb12           v5-pip            fed5275e4f4e   6 minutes ago       623MB
+deb12           v4-setup          fbfe2be48a55   6 minutes ago       580MB
+deb12           base              1e4a35d97275   6 minutes ago       536MB
+<none>          <none>            6045512debaa   About an hour ago   450MB
+debian          12-slim           e1e4ad0a52a4   2 weeks ago         97.2MB
+debian          12                a588e7890234   2 weeks ago         139MB
+
+
+see the Dockerfile and docker-compose.yml files for details....
+
+about python versions...
+ - base os is python 3.11.2
