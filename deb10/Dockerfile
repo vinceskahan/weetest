@@ -59,20 +59,19 @@ RUN apt-get install -y python3 python-dev python3-dev \
      python3-configobj python3-serial python3-usb \
      zlib1g-dev libjpeg-dev
 
+# pip/Pillow require special steps for deb10
+
 USER weewx
 RUN python3 -m venv /home/weewx/weewx-venv \
     && . /home/weewx/weewx-venv/bin/activate \
-    && pip3 install pillow \
-    && pip3 install weewx==5.0b15    \
+    && pip3 install configobj cheetah3 pyusb pyserial pyephem \
+    && pip3 install pip --upgrade \
+    && pip3 install Pillow --upgrade \
+    && pip3 install weewx==5.0b15     \
     && weectl station create --no-prompt \
     && sed -i -e s:debug\ =\ 0:debug\ =\ 1: /home/weewx/weewx-data/weewx.conf \
     && sed -i -e s:weewx.engine.StdPrint,:: /home/weewx/weewx-data/weewx.conf \
     && cat /tmp/logging.additions >> /home/weewx/weewx-data/weewx.conf
-
-#RUN . /home/weewx/weewx-venv/bin/activate \
-    #&& pip3 install wheel \
-    #&& python3 setup.py bdist_wheel \
-    #&& pip3 intstall Pillow==9.5.0 
 
 CMD /home/weewx/weewx-venv/bin/weewxd
 
@@ -114,5 +113,5 @@ RUN apt-get install -y python3-configobj python3-pil python3-serial python3-usb 
     && sed -i -e s:weewx.engine.StdPrint,:: /home/weewx/weewx.conf \
     && cat /tmp/logging.additions >> /home/weewx/weewx.conf 
 
-CMD /home/weewx/bin/weewxd
 
+CMD /home/weewx/bin/weewxd
