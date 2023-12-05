@@ -77,16 +77,13 @@ FROM base as v4pkg
 
 RUN wget -qO - https://weewx.com/keys.html | gpg --dearmor --output /etc/apt/trusted.gpg.d/weewx.gpg \
     && wget -qO - https://weewx.com/apt/weewx-python3.list | tee /etc/apt/sources.list.d/weewx.list \
-    && apt-get update
+    && apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y weewx \
+    && sed -i -e s:debug\ =\ 0:debug\ =\ 1: /etc/weewx/weewx.conf \
+    && sed -i -e s:weewx.engine.StdPrint,:: /etc/weewx/weewx.conf \
+    && cat /tmp/logging.additions >> /etc/weewx/weewx.conf
 
-RUN wget http://weewx.com/downloads/released_versions/python-weewx_4.10.2-1_all.deb -O /root/weewx-4.10.2-1_all.deb 
-
-# it breaks here.  This installs python3 but the .deb wants all python2 stuff installed as prerequisites
-# unless there is some magic in debian that makes the requires in the .deb work
-
-RUN apt-get install -y python3-configobj python3-usb python3-serial 
-
-#CMD /usr/bin/weewxd
+CMD /usr/bin/weewxd
 
 #-------------------------------------------------------------
 # install v4 setup.py over the base image above

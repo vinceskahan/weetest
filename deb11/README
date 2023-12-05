@@ -12,17 +12,12 @@ docker compose down
 output of docker images:
 
     [vince@vinces-Mac-mini deb11 (refactor %=)]$ docker images
-    deb11           v5-pip            25334115ae62   4 minutes ago   478MB
-    deb11           v4-setup          6045512debaa   4 minutes ago   450MB
-    deb11           base              e61b1e0cf0a5   4 minutes ago   409MB
+    deb11           v5-pip            fa7717cc8a7e   29 seconds ago   478MB
+    deb11           v4-pkg            ceccf73428d4   30 seconds ago   428MB
+    deb11           v4-setup          35b664e174c9   31 seconds ago   450MB
+    deb11           base              e49fb7c2a930   35 seconds ago   409MB
     debian          11-slim           a55ac8332a11   2 weeks ago     74.4MB
     debian          11                032648844822   2 weeks ago     118MB
-
-#############################################
-# NOTE - v4-pkg does not build at this time #
-# NOTE - v4-pkg does not build at this time #
-# NOTE - v4-pkg does not build at this time #
-#############################################
 
 see the Dockerfile and docker-compose.yml files for details....
 
