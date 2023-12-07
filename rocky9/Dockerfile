@@ -89,13 +89,15 @@ FROM base as v4pkg
 #    remove StdPrint so LOOP isn't sent to stdout
 #    append logging stanza so we don't look for syslogd at runtime
 
+####RUN yum install -y http://weewx.com/downloads/released_versions/weewx-4.10.2-1.el8.noarch.rpm \
+
 RUN yum install -y gcc python3 python3-pip python3-pyserial python3-pyusb python3-devel \
     && python3 -m pip install pip --upgrade \
     && python3 -m pip install CT3 Pillow==9.4.0 configobj \
     && update-crypto-policies --set DEFAULT:SHA1 \
     && rpm --import https://weewx.com/keys.html \
     && curl -s https://weewx.com/yum/weewx-el8.repo | tee /etc/yum.repos.d/weewx.repo \
-    && yum install -y weewx \
+    && yum install -y weewx-4.10.2 \
     && update-crypto-policies --set DEFAULT \
     && yum remove -y gcc \
     && sed -i -e s:debug\ =\ 0:debug\ =\ 1: /etc/weewx/weewx.conf \

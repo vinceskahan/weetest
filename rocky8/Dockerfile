@@ -98,7 +98,7 @@ FROM base as v4pkg
 RUN yum install -y python3-cheetah \
     && rpm --import https://weewx.com/keys.html \
     && curl -s https://weewx.com/yum/weewx-el8.repo | tee /etc/yum.repos.d/weewx.repo \
-    && yum install -y weewx \
+    && yum install -y weewx-4.10.2 \
     && sed -i -e s:debug\ =\ 0:debug\ =\ 1: /etc/weewx/weewx.conf \
     && sed -i -e s:weewx.engine.StdPrint,:: /etc/weewx/weewx.conf \
     && cat /tmp/logging.additions >> /etc/weewx/weewx.conf 
