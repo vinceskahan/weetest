@@ -78,7 +78,7 @@ FROM base as v4pkg
 RUN wget -qO - https://weewx.com/keys.html | gpg --dearmor --output /etc/apt/trusted.gpg.d/weewx.gpg \
     && wget -qO - https://weewx.com/apt/weewx-python3.list | tee /etc/apt/sources.list.d/weewx.list \
     && apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y weewx \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y weewx=4.10.2-1 \
     && sed -i -e s:debug\ =\ 0:debug\ =\ 1: /etc/weewx/weewx.conf \
     && sed -i -e s:weewx.engine.StdPrint,:: /etc/weewx/weewx.conf \
     && cat /tmp/logging.additions >> /etc/weewx/weewx.conf
